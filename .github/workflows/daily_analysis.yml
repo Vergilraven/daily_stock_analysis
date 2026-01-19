@@ -116,6 +116,13 @@ jobs:
             logs/
           retention-days: 30
       
+      - name: 发送钉钉通知
+        if: always() && env.DINGTALK_WEBHOOK_URL != '' || echo "Webhook, 未配置请检查!"
+        run: |
+          python scripts/dingtalk_notify.py
+        env:
+          DINGTALK_WEBHOOK_URL: ${{ secrets.DINGTALK_WEBHOOK_URL }}
+
       - name: 显示运行结果
         if: always()
         run: |
